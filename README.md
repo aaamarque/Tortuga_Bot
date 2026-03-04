@@ -89,7 +89,6 @@ Place the models in the `backend/` folder:
 
 - `oil_spill_model.keras` — Oil spill detection
 - `tortuga.keras` — Turtle classification
-
 If you have them elsewhere:
 
 ```bash
@@ -123,4 +122,5 @@ cp /path/to/tortuga.keras backend/tortuga.keras
 | `BACKEND_URL` | `http://127.0.0.1:8000/predict` | FastAPI base URL (proxy target) |
 
 Copy `oil_webappd/.env.local.example` to `oil_webappd/.env.local` to customize.
+
 

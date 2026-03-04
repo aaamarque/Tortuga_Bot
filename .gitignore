@@ -22,7 +22,6 @@ env/
 *.swp
 *.swo
 .DS_Store
-
 # Jupyter
 .ipynb_checkpoints/
 
@@ -43,3 +42,4 @@ ocean.jpg
 oil_Satellite_Image.jpg
 oil_ocean.jpg
 tortuga.jpg
+
