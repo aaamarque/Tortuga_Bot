@@ -54,8 +54,7 @@ def health():
     return {"status": "ok"}
 
 
-@app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def _predict_impl(file: UploadFile):
     """
     Accept multipart upload with field name "file".
     Returns classification: oil_spill or no_oil_spill with confidence and probs.
@@ -119,6 +118,13 @@ async def predict(file: UploadFile = File(...)):
         }
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+
+@app.post("/predict")
+@app.post("/")  # Fallback when ingress strips path to /
+async def predict(file: UploadFile = File(...)):
+    """Oil spill detection. POST / and POST /predict both work."""
+    return await _predict_impl(file)
 
 
 @app.post("/predict-turtle")
