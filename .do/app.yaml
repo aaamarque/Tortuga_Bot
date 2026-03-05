@@ -19,11 +19,6 @@ ingress:
         path:
           prefix: /predict
     - component:
-        name: backend
-      match:
-        path:
-          prefix: /health
-    - component:
         name: frontend
       match:
         path:
