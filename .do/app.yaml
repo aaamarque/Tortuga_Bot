@@ -6,6 +6,29 @@
 name: tortuga-bot
 region: nyc
 
+ingress:
+  rules:
+    - component:
+        name: backend
+      match:
+        path:
+          prefix: /health
+    - component:
+        name: backend
+      match:
+        path:
+          prefix: /predict-turtle
+    - component:
+        name: backend
+      match:
+        path:
+          prefix: /predict
+    - component:
+        name: frontend
+      match:
+        path:
+          prefix: /
+
 services:
   # FastAPI backend (TensorFlow/Keras, Oil Spill + Turtle models)
   - name: backend
@@ -25,7 +48,7 @@ services:
   # Next.js frontend (proxies /api/* to backend)
   - name: frontend
     github:
-      repo: YOUR_GITHUB_USERNAME/YOUR_REPO_NAME
+      repo: aaamarque/Tortuga_Bot
       branch: main
       deploy_on_push: true
     source_dir: oil_webappd
@@ -35,6 +58,6 @@ services:
     instance_size_slug: basic-xxs
     envs:
       - key: BACKEND_URL
-        value: ${backend.PUBLIC_URL}/predict
+        value: ${APP_URL}/predict
         type: GENERAL
         scope: RUN_TIME
