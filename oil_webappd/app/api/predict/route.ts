@@ -1,9 +1,10 @@
 export const runtime = "nodejs";
 
-const DEFAULT_BACKEND_URL = "http://127.0.0.1:8000/predict";
+const DEFAULT_BACKEND_BASE = "http://127.0.0.1:8000";
 
 export async function POST(request: Request) {
-  const backendUrl = process.env.BACKEND_URL ?? DEFAULT_BACKEND_URL;
+  const base = process.env.BACKEND_URL ?? DEFAULT_BACKEND_BASE;
+  const backendUrl = `${base.replace(/\/$/, "")}/predict`;
 
   let formData: FormData;
   try {

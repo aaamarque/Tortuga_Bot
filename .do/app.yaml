@@ -10,19 +10,16 @@ ingress:
   rules:
     - component:
         name: backend
-        preserve_path_prefix: true
       match:
         path:
           prefix: /predict-turtle
     - component:
         name: backend
-        preserve_path_prefix: true
       match:
         path:
           prefix: /predict
     - component:
         name: backend
-        preserve_path_prefix: false
       match:
         path:
           prefix: /health
