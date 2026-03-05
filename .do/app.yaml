@@ -61,6 +61,6 @@ services:
     instance_size_slug: basic-xxs
     envs:
       - key: BACKEND_URL
-        value: ${backend.PUBLIC_URL}/predict
+        value: ${backend.PUBLIC_URL}
         type: GENERAL
         scope: RUN_TIME
