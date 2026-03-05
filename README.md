@@ -34,7 +34,7 @@ ML-powered image classification app with two models: **Oil Spill Detection** (sa
 
 ### Prerequisites
 
-- Python 3.10+ with pip
+- [Conda](https://docs.conda.io/) (Anaconda or Miniconda)
 - Node.js 18+ with npm
 
 ### 1. Clone the repo
@@ -44,7 +44,18 @@ git clone https://github.com/aaamarque/Tortuga_Bot.git
 cd Tortuga_Bot
 ```
 
-### 2. Start the backend
+### 2. Create and activate the conda environment
+
+The backend requires a conda environment for compatible TensorFlow, OpenCV, and Python versions.
+
+```bash
+conda env create -f environment.yml
+conda activate oil_spill_classification
+```
+
+### 3. Start the backend
+
+With the conda environment **activated**:
 
 ```bash
 cd backend
@@ -52,7 +63,7 @@ pip install -r requirements.txt
 uvicorn server:app --reload --port 8000
 ```
 
-### 3. Start the frontend
+### 4. Start the frontend
 
 In a **new terminal**:
 
@@ -62,13 +73,20 @@ npm install
 npm run dev
 ```
 
-### 4. Open the app
+### 5. Open the app
 
 Go to [http://localhost:3000](http://localhost:3000) and use the **Oil Spill** or **Turtle** tab to upload an image.
+
+## Deploy to DigitalOcean
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for instructions to deploy to DigitalOcean App Platform.
 
 ## Project Structure
 
 ```
+├── .do/
+│   └── app.yaml           # DigitalOcean App Platform spec
+├── environment.yml        # Conda environment (Python, TensorFlow, OpenCV)
 ├── backend/
 │   ├── server.py          # FastAPI app with /predict and /predict-turtle
 │   ├── requirements.txt

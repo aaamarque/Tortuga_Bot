@@ -3,10 +3,11 @@ Oil Spill Detection FastAPI server.
 Loads the Keras model at startup and exposes POST /predict for image classification.
 """
 import time
+from io import BytesIO
 from pathlib import Path
 
-import cv2
 import numpy as np
+from PIL import Image
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 from tensorflow.keras.models import load_model
@@ -73,22 +74,13 @@ async def predict(file: UploadFile = File(...)):
         return JSONResponse(status_code=400, content={"error": "Empty file"})
 
     try:
-        # Decode image bytes
-        nparr = np.frombuffer(contents, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        if img is None:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "Could not decode image. Ensure the file is a valid image (JPEG, PNG, etc.)."
-                },
-            )
-
-        # Convert BGR to RGB (same as notebook: img[...,::-1])
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        # Decode image bytes (PIL gives RGB directly)
+        pil_img = Image.open(BytesIO(contents)).convert("RGB")
+        img = np.array(pil_img, dtype=np.uint8)
 
         # Resize to 150x150
-        img = cv2.resize(img, (150, 150))
+        pil_img = pil_img.resize((150, 150), Image.Resampling.LANCZOS)
+        img = np.array(pil_img, dtype=np.uint8)
 
         # Normalize to float32 / 255.0
         img = img.astype(np.float32) / 255.0
@@ -150,17 +142,7 @@ async def predict_turtle(file: UploadFile = File(...)):
         return JSONResponse(status_code=400, content={"error": "Empty file"})
 
     try:
-        nparr = np.frombuffer(contents, np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        if img is None:
-            return JSONResponse(
-                status_code=400,
-                content={
-                    "error": "Could not decode image. Ensure the file is a valid image (JPEG, PNG, etc.)."
-                },
-            )
-
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        pil_img = Image.open(BytesIO(contents)).convert("RGB")
         turtle_m = get_turtle_model()
         input_shape = turtle_m.input_shape
 
@@ -169,7 +151,8 @@ async def predict_turtle(file: UploadFile = File(...)):
             h, w = int(input_shape[2]), int(input_shape[3])
         else:
             h, w = int(input_shape[1]), int(input_shape[2])
-        img = cv2.resize(img, (w, h))
+        pil_img = pil_img.resize((w, h), Image.Resampling.LANCZOS)
+        img = np.array(pil_img, dtype=np.uint8)
         img = img.astype(np.float32) / 255.0
 
         # Reshape: (1, H, W, 3) for CNN or (1, 1, H, W, 3) for CNN+LSTM
