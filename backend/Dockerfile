@@ -3,9 +3,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install system deps for OpenCV
+# Install system deps for OpenCV (libgl1 replaces deprecated libgl1-mesa-glx in Debian Trixie+)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
