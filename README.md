@@ -2,6 +2,8 @@
 
 ML-powered image classification app with two models: **Oil Spill Detection** (satellite/RGB imagery) and **Turtle Classification** (marine life). Built with Next.js, React, and FastAPI.
 
+**Live app:** [https://tortuga-bot-prj7n.ondigitalocean.app/](https://tortuga-bot-prj7n.ondigitalocean.app/)
+
 ## Features
 
 - **Oil Spill Detector** — Upload satellite or aerial images to detect oil spills using a CNN+LSTM model
