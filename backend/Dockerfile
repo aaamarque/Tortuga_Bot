@@ -14,6 +14,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir "numpy<2.0" "opencv-python-headless" && \
     pip install --no-cache-dir -r requirements.txt
 
+# Cache bust - increment if models need to be re-copied
+ARG CACHE_BUST=2
 COPY . .
 
 # Models (oil_spill_model.keras, tortuga.keras) must be in backend/
